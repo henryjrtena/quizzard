@@ -3,7 +3,7 @@ import {nanoid} from 'nanoid'
 import shuffle from './Functions';
 import Buttons from './Buttons'
 
-export default function Questions({questions, select}){
+export default function Questions({questions, select, check}){
   
   const newQuestions = questions?.map(questions=>{
     if(!questions.options){
@@ -35,6 +35,9 @@ export default function Questions({questions, select}){
   return (
     <div className='questions'>
       {element}
+      <div className='selection'>
+        <button onClick={()=>{check(newQuestions)}}>Check answers</button>
+      </div>
     </div>
   )
 }

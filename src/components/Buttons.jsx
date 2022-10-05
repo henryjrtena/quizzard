@@ -9,6 +9,6 @@ export default function Buttons ({option, newQuestions, questionsId, select, act
             color: "#F5F7FB"
         }
     }
-    //console.log("option: ", option , "active: ", active)
+
     return <button style={styles} key={nanoid()} onClick={()=>{select(newQuestions, option, questionsId)}} value={atob(option)} className={`option--button`}>{atob(option)}</button>
 }

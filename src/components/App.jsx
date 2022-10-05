@@ -3,16 +3,16 @@ import Questions from './Questions';
 import './../assets/styles.scss'
 
 export default function ParentComponent(){
-  // const [isParentData, setIsParentData] = useState(['original']);
-  const [questions, setQuestions] = useState();
+  const [questions, setQuestions] = useState()
   const [start, setStart] = useState(false)
+  const [completeAnswer, setCompleteAnswer] = useState(Number(0))
+  const [score, setScore] = useState(Number(0))
+
   async function letStart() {
-    
     const res = await fetch("https://opentdb.com/api.php?amount=5&category=32&type=multiple&encode=base64")
     const data = await res.json()
     setQuestions([...data.results])
     setStart(true)
-  
   }
 
   function setIs(el){
@@ -21,7 +21,6 @@ export default function ParentComponent(){
 
   function select(el, select, parentId){
     el.map(questions => {
-      console.log(questions.id , parentId)
       if(questions.id === parentId){
         if(questions.selected === select){
           return questions.selected = ''
@@ -31,11 +30,30 @@ export default function ParentComponent(){
         }
         
       }else{
+        
         return {...questions}
       }
     })
-    console.log('el', el)
     setQuestions(el)
+  }
+
+  function check(el){
+    console.log('checking')
+    console.log(completeAnswer)
+    let scoore = 0
+
+      // Evaluate answers
+      el.map(questions => {
+        if(questions.selected === questions.correct_answer){
+          console.log('update', scoore)
+          scoore++
+        }
+      })
+    
+      //NaN issue with the score will be nack
+
+      console.log('ended', Number(scoore))
+
   }
 
   return (
@@ -43,12 +61,15 @@ export default function ParentComponent(){
       {
         !start 
         &&
-        <div>
-          <p>Welcome to Quizzard!</p>
+        <div className='landing'>
+          <p className='brand'>Welcome to Quizzard!</p>
+          <p>Let's try your Cartoon Network & Animations knowledge!</p>
           <button onClick={letStart}>Start</button>
         </div>
+        ||
+        <Questions questions={questions} sendToParent={setIs} select={select} check={check} />
       }
-      <Questions questions={questions} sendToParent={setIs} select={select} />
+      
     </div>
   );
 }
