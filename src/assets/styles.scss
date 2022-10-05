@@ -94,5 +94,17 @@
     .option--button .active{
         background-color: #4D5B9E;
     }
+
+    .correct{
+        border-color: #94D7A2 !important;
+        background-color: #94D7A2 !important; 
+        color: #293264 !important;
+    }
+
+    .wrong{
+        border-color: #F8BCBC;
+        background-color: #F8BCBC;
+        color: #50577c;
+    }
 }
 

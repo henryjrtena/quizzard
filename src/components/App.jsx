@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Questions from './Questions';
 import './../assets/styles.scss'
+import { nanoid } from 'nanoid';
 
 export default function ParentComponent(){
   const [questions, setQuestions] = useState()
   const [start, setStart] = useState(false)
+
+  const [doneAnswering, setDoneAnswering] = useState(false)
   const [completeAnswer, setCompleteAnswer] = useState(Number(0))
   const [score, setScore] = useState(Number(0))
 
@@ -23,9 +26,11 @@ export default function ParentComponent(){
     el.map(questions => {
       if(questions.id === parentId){
         if(questions.selected === select){
+          setCompleteAnswer(prev => Number(prev) - 1)
           return questions.selected = ''
         }
         else{
+          setCompleteAnswer(prev => Number(prev) + 1)
           return questions.selected = select
         }
         
@@ -38,22 +43,23 @@ export default function ParentComponent(){
   }
 
   function check(el){
-    console.log('checking')
-    console.log(completeAnswer)
-    let scoore = 0
+    console.log('Checking')
+    if(Number(completeAnswer) === 5){
 
       // Evaluate answers
+      let scoreX = 0
       el.map(questions => {
         if(questions.selected === questions.correct_answer){
-          console.log('update', scoore)
-          scoore++
+          scoreX++
         }
       })
-    
-      //NaN issue with the score will be nack
 
-      console.log('ended', Number(scoore))
-
+      setScore(scoreX)
+      questions['done'] = true
+    }
+    console.log('Your score  is ', Number(score))
+    console.log('End Checking')
+    setDoneAnswering(true)
   }
 
   return (
@@ -68,6 +74,9 @@ export default function ParentComponent(){
         </div>
         ||
         <Questions questions={questions} sendToParent={setIs} select={select} check={check} />
+      }
+      {
+        doneAnswering && <p key={nanoid()}>Your score is {Number(score)}/5</p>
       }
       
     </div>
